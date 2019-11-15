@@ -88,6 +88,10 @@ bassik <- bassik_list[!(bassik_list$gene == "none"| bassik_list$gene == "safe"),
 table <- t(as.data.frame(table(as.vector(bassik$library))))
 table
 
+# export gene list
+
+write.csv (bassik, "bassik_sublibraries.csv")
+
 ```
 
 # E3 ubiquitin ligases
