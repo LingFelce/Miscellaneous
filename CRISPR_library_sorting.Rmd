@@ -93,6 +93,31 @@ table
 write.csv (bassik, "bassik_sublibraries.csv")
 
 ```
+# Brunello kinome library
+
+```{r brunello}
+
+brunello_gene_list <- read.csv("brunello_gene_list.csv", header=FALSE)
+
+# several guides per gene - collapse list to see how many genes in kinome library
+brunello <- unique(brunello_gene_list)
+
+brunello <- as.vector(brunello$V1)
+
+```
+
+# Sabatini metabolic genes library
+
+```{r sabatini}
+
+sabatini_gene_list <- read.csv("sabatini_gene_list.csv", header=TRUE)
+
+sabatini <- as.vector(sabatini_gene_list$Gene.Symbol)
+
+
+```
+
+
 
 # E3 ubiquitin ligases
 
@@ -113,6 +138,20 @@ e3_bassik <- bassik[is.element(bassik$gene, e3_ligases$gene),]
 
 table(as.vector(e3_bassik$library))
 
+# check to see if E3 ubiquitin ligases are on Brunello gene list
+
+e3_brunello <- brunello[is.element(brunello, e3_ligases$gene)]
+
+print("Number of E3 ligase genes in Brunello library") 
+nrow(e3_brunello)
+
+# check to see if E3 ubiquitin ligases are on Sabatini gene list
+
+e3_sabatini <- sabatini[is.element(sabatini, e3_ligases$gene)]
+
+print("Number of E3 ligase genes in Sabatini library") 
+nrow(e3_sabatini)
+
 ```
 
 # SLC family
@@ -132,6 +171,20 @@ table(as.vector(slc_weissman$library))
 slc_bassik <- bassik[is.element(bassik$gene, slc$gene),]
 
 table(as.vector(slc_bassik$library))
+
+# check to see if E3 ubiquitin ligases are on Brunello gene list
+
+slc_brunello <- brunello[is.element(brunello, slc$gene)]
+
+print("Number of SLc family in Brunello library") 
+nrow(slc_brunello)
+
+# check to see if SLC family are on Sabatini gene list
+
+slc_sabatini <- as.data.frame(sabatini[is.element(sabatini, slc$gene)])
+
+print("Number of SLC genes in Sabatini library") 
+nrow(slc_sabatini)
 
 ```
 
