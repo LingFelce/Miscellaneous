@@ -38,7 +38,7 @@ table(as.vector(master$library))
 # h5_genes <- master[is.element(master$library, library_list[5]),]
 # h6_genes <- master[is.element(master$library, library_list[6]),]
 # h7_genes <- master[is.element(master$library, library_list[7]),]
-# 
+#
 # write.csv(h1_genes, "h1_genes.csv")
 # write.csv(h2_genes, "h2_genes.csv")
 # write.csv(h3_genes, "h3_genes.csv")
@@ -46,6 +46,39 @@ table(as.vector(master$library))
 # write.csv(h5_genes, "h5_genes.csv")
 # write.csv(h6_genes, "h6_genes.csv")
 # write.csv(h7_genes, "h7_genes.csv")
+
+## I WROTE A LOOP IN R!!!
+
+## Avoid repetitive code above using a for loop - looked at these links:
+# https://r4ds.had.co.nz/iteration.html#introduction-14
+# https://www.earthdatascience.org/courses/earth-analytics/automate-science-workflows/create-for-loops-r/
+
+# create test file with first 100 rows from Weissman master file
+test <- head(master, n=100)
+
+# create output - empty vector with:
+# - type of vector: logical, integer, double or character
+# - length of vector (number of columns)
+output <- vector("character", ncol(master))
+
+# i in vector/list/data frame determines what to loop over;
+# each run of for loop will assign i to different value from vector
+# output[[i]] - need double brackets to select single element
+# for lists [] returns list of selected elements
+# main body of code run repeatedly with different value for i each time
+# create a .csv file - use paste0() to paste together a file name
+
+for (i in library_list) {
+  output[[i]] <- test[is.element(test$library, i),]
+  write.csv(output[i], file=paste0("test/", i, ".csv"))
+}
+
+# for actual master file:
+# for (i in library_list){
+#   output[[i]] <- master[is.element(master$library, i),]
+#   write.csv(output[i], file=paste0(i, "_genes.csv"))
+# }
+
 
 # optional - annotate gene list with full gene names
 # data <- as.vector(master$gene)
