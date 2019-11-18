@@ -221,3 +221,10 @@ nrow(slc_sabatini)
 
 ```
 
+# Removing E3 ligase genes from Weissman and Bassik libraries
+
+```{r editing}
+
+# df <- filter(df, C != "Foo")
+
+```
