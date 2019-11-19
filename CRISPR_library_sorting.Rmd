@@ -170,6 +170,20 @@ sabatini <- as.vector(sabatini_gene_list$Gene.Symbol)
 ```
 
 
+# Sanger druggable genes panel
+From Sigma-Aldrich/Merck:
+
+We have both an "expanded discovery" panel, and the more focused "core essential" panel for the human druggable genome. The expanded discovery panel targets 8,564 genes, and there's 17,132 clones in the set; the core essential panel targets 967 genes, and there's 1,934 clones in the set.
+
+```{r sanger}
+
+sanger_master <- read.csv("sanger_panel.csv", header=FALSE)
+
+names(sanger_master)[1] <- "gene"
+
+sanger <- as.vector(sanger_master$gene)
+
+```
 
 # E3 ubiquitin ligases
 
@@ -195,14 +209,23 @@ table(as.vector(e3_bassik$library))
 e3_brunello <- brunello[is.element(brunello, e3_ligases$gene)]
 
 print("Number of E3 ligase genes in Brunello library") 
-nrow(e3_brunello)
+length(e3_brunello)
 
 # check to see if E3 ubiquitin ligases are on Sabatini gene list
 
 e3_sabatini <- sabatini[is.element(sabatini, e3_ligases$gene)]
 
 print("Number of E3 ligase genes in Sabatini library") 
-nrow(e3_sabatini)
+length(e3_sabatini)
+
+# check to see if E3 ligase genes on Sanger list
+
+e3_sanger <- sanger[is.element(sanger, e3_ligases$gene)]
+
+print("Number of E3 ligase genes in Sanger library") 
+length(e3_sanger)
+
+
 
 ```
 
@@ -229,14 +252,21 @@ table(as.vector(slc_bassik$library))
 slc_brunello <- brunello[is.element(brunello, slc$gene)]
 
 print("Number of SLc family in Brunello library") 
-nrow(slc_brunello)
+length(slc_brunello)
 
 # check to see if SLC family are on Sabatini gene list
 
-slc_sabatini <- as.data.frame(sabatini[is.element(sabatini, slc$gene)])
+slc_sabatini <- sabatini[is.element(sabatini, slc$gene)]
 
 print("Number of SLC genes in Sabatini library") 
-nrow(slc_sabatini)
+length(slc_sabatini)
+
+# check to see if SLC genes on Sanger list
+
+slc_sanger <- sanger[is.element(sanger, slc$gene)]
+
+print("Number of SLC genes in Sanger library") 
+length(slc_sanger)
 
 ```
 
