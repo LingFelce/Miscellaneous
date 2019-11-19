@@ -87,6 +87,25 @@ for (i in library_list) {
 
 # annotated_list <- merge(master, annots, by.x="gene", by.y="SYMBOL")
 
+## Nick's version
+# The basic for loop you want, to replace your repeated code, is:
+
+# define the length of the loop by the length of the library list
+# curly bracket opens the loop
+#for (i in 1:length(library_list)) {
+
+# use i to define which member of the library list you want (this changes each loop)  
+# gene_set <- master[is.element(master$library, library_list[i]),]
+  
+# define variables needed for the output filename
+# this isn’t really necessary (you could put this directly in the write.csv command, but I think this way is easier to read)
+# library_filename <- paste0(library_list[i], "_genes.csv")
+
+# write.csv(gene_set, file = library_filename)
+
+# curly bracket closes the loop
+# }
+
 ```
 
 # Bassik library - pulling out gene and library name from gRNA name
