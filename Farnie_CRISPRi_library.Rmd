@@ -1,0 +1,46 @@
+---
+title: "Farnie_library"
+author: "Ling"
+date: "20/11/2019"
+output: html_document
+---
+
+# Farnie CRISPR inactivation library
+
+Based on Sigma/Sanger expanded discovery druggable genome list, with additions of:
+- E3 ligase family
+- SLC family
+- NUDIX family
+- APOBEC family
+- HDAC family
+- positive controls: CTNNB1, PTK2, NOTCH1, NOTCH4
+
+# Read in gene lists
+```{r}
+
+sanger_master <- read.csv("sanger_panel.csv", header=FALSE)
+names(sanger_master)[1] <- "gene"
+
+e3_master <- read.csv("e3_ub_ligases.csv", header=TRUE)
+
+slc_master <- read.csv("slc_list.csv", header=TRUE)
+
+nudix_master <- read.csv("nudix_genes.csv", header=TRUE)
+
+apobec_master <- as.data.frame(c("AID", "APOBEC2", "APOBEC1", "APOBEC3A", "APOBEC3B", "APBOEC3C", "APOBEC3D", "APOBEC3F", "APOBEC3G", "APOBEC3H", "APOBEC4"))
+names(apobec_master)[1] <- "gene"
+
+hdac_master <- read.csv("hdac_genes.csv", header=TRUE)
+
+pos_genes <- as.data.frame(c("CTNNB1", "PTK2", "NOTCH1", "NOTCH4"))
+names(pos_genes)[1] <- "gene"
+
+```
+
+
+# Find which genes are missing from Sanger list
+```{r}
+
+
+
+```
