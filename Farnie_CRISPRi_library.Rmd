@@ -30,7 +30,8 @@ nudix_master <- read.csv("nudix_genes.csv", header=TRUE)
 apobec_master <- as.data.frame(c("AID", "APOBEC2", "APOBEC1", "APOBEC3A", "APOBEC3B", "APBOEC3C", "APOBEC3D", "APOBEC3F", "APOBEC3G", "APOBEC3H", "APOBEC4"))
 names(apobec_master)[1] <- "gene"
 
-hdac_master <- read.csv("hdac_genes.csv", header=TRUE)
+hdac_master <- read.csv("hdac_genes.csv", header=FALSE)
+names(hdac_master)[1] <- "gene"
 
 pos_genes <- as.data.frame(c("CTNNB1", "PTK2", "NOTCH1", "NOTCH4"))
 names(pos_genes)[1] <- "gene"
@@ -39,8 +40,42 @@ names(pos_genes)[1] <- "gene"
 
 
 # Find which genes are missing from Sanger list
+```{r test}
+
+a <- c(2, 4, 6, 8, 10)
+b <- c(2, 6, 8, 10)
+c <- setdiff(a,b)
+
+setdiff(pos_genes$gene, sanger_master$gene)
+
+```
+
 ```{r}
+# if want to do individually as families ...
 
+# e3_lig <- as.data.frame(setdiff(e3_master$gene, sanger_master$gene))
+# names(e3_lig)[1] <- "gene"
 
+# combine all gene lists together
+e3 <- as.vector(e3_master$gene)
+slc <- as.vector(slc_master$gene)
+nudix <- as.vector(nudix_master$gene)
+hdac <- as.vector(hdac_master$gene)
+apobec <- as.vector(apobec_master$gene)
+all_families <- c(e3, slc, nudix, hdac, apobec)
+length(all_families)
+
+# see what's missing from Sanger list
+
+missing_genes <- as.data.frame(setdiff(all_families, sanger_master$gene))
+names(missing_genes)[1] <- "gene"
+
+# combine missing genes with Sanger list
+
+farnie_library <- rbind(sanger_master, missing_genes)
+
+# export
+
+write.csv(farnie_library, "Farnie_CRISPRi_library.csv")
 
 ```
