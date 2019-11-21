@@ -45,7 +45,8 @@ print("Number of genes in NUDIX family")
 nudix.shape
 
 # create APOBEC list
-apobec_genes = [["AID"], ["APOBEC2"], ["APOBEC1"], ["APOBEC3A"], ["APOBEC3B"], ["APOBEC3C"], ["APOBEC3D"], ["APOBEC3F"],["APOBEC3G"], ["APOBEC3H"], ["APOBEC4"]]
+apobec_genes = [["AID"], ["APOBEC2"], ["APOBEC1"], ["APOBEC3A"], ["APOBEC3B"], ["APOBEC3C"], ["APOBEC3D"], 
+                ["APOBEC3F"],["APOBEC3G"], ["APOBEC3H"], ["APOBEC4"]]
 apobec = pd.DataFrame(apobec_genes, columns=["gene"])
 
 print("Number of genes in APOBEC family") 
