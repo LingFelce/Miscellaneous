@@ -54,19 +54,19 @@ tracer assemble -c tracer.conf -r -p 12 -s Hsap -q kallisto raw_files/merge/2012
 
 ## The following to run programs in the current working directory
 
--cwd
+#$ -cwd
 
 
 ## Specify a queue
 
--q batchq
+#$ -q batchq
 
 
 ## The following two lines will send an email notification when the job is
 ## Ended/Aborted/Suspended - Please replace "UserName" with your own username.
 
--M lfelce
--m eas
+#$ -M lfelce
+#$ -m eas
 
 module load tracer
 module load kallisto
