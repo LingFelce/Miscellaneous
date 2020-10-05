@@ -15,3 +15,5 @@ module load tracer
 Hsap = /databank/igenomes/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta
 tracer assemble -p 8 -s Hsap -q kallisto raw_files/merge/201249_1.fastq.gz raw_files/merge/201249_2.fastq.gz P1_A1_UK001CD8A2_2006 test_output
 
+# found location of tracer.conf, can't seem to make edits though
+/package/tracer/implementing_build-20170413
