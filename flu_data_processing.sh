@@ -35,4 +35,40 @@ tracer assemble -p 8 -s Hsap -q kallisto raw_files/merge/201249_1.fastq.gz raw_f
 tracer assemble -c tracer.conf -p 8 -s Hsap -q kallisto raw_files/merge/201249_1.fastq.gz raw_files/merge/201249_2.fastq.gz P1_A1_UK001CD8A2_2006 test_output
 
 # final bit with kallisto running really slowly, put more cores!
+module load tracer
+module load kallisto
 tracer assemble -c tracer.conf -r -p 12 -s Hsap -q kallisto raw_files/merge/201249_1.fastq.gz raw_files/merge/201249_2.fastq.gz P1_A1_UK001CD8A2_2006 test_output
+
+# submit job to queue as takes ages even with just 1 sample (paired reads)
+
+#!/bin/sh
+##########################################################################
+## A script template for submitting batch jobs. To submit a batch job,
+## please type
+##
+##    qsub tracer_assemble.sh
+##
+## Please note that anything after the first two characters "#$" on a line
+## will be treated as a SUN Grid Engine command.
+##########################################################################
+
+## The following to run programs in the current working directory
+
+-cwd
+
+
+## Specify a queue
+
+-q batchq
+
+
+## The following two lines will send an email notification when the job is
+## Ended/Aborted/Suspended - Please replace "UserName" with your own username.
+
+-M lfelce
+-m eas
+
+module load tracer
+module load kallisto
+tracer assemble -c tracer.conf -r -p 12 -s Hsap -q kallisto raw_files/merge/201249_1.fastq.gz raw_files/merge/201249_2.fastq.gz P1_A1_UK001CD8A2_2006 test_output
+
