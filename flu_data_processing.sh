@@ -72,3 +72,87 @@ module load tracer
 module load kallisto
 tracer assemble -c tracer.conf -r -p 12 -s Hsap -q kallisto raw_files/merge/201249_1.fastq.gz raw_files/merge/201249_2.fastq.gz P1_A1_UK001CD8A2_2006 test_output
 
+# error message from most recent run (7th - 8th October 2020)
+# [build] loading fasta file /t1-data/user/lfelce/P170335/test_output/P1_A1_UK001CD8A2_2006/expression_quantification/kallisto_index/P1_A1_UK001CD8A2_2006_transcriptome.fa
+# [build] k-mer length: 31
+# [build] warning: replaced 165046090 non-ACGUT characters in the input sequence
+        # with pseudorandom nucleotides
+# [build] counting k-mers ... done.
+# [build] building target de Bruijn graph ...  done 
+# [build] creating equivalence classes ...  done
+# [build] target de Bruijn graph has 38967164 contigs and contains 2666295089 k-mers 
+
+
+# [quant] fragment length distribution will be estimated from the data
+# [index] k-mer length: 31
+# [index] number of targets: 197
+# [index] number of k-mers: 2,666,295,089
+# [index] number of equivalence classes: 1,867,558
+# [quant] running in paired-end mode
+# [quant] will process pair 1: raw_files/merge/201249_1.fastq.gz
+                             # raw_files/merge/201249_2.fastq.gz
+# [quant] finding pseudoalignments for the reads ... done
+# [quant] processed 2,793,690 reads, 2,385,777 reads pseudoaligned
+# [quant] estimated average fragment length: 277.88
+# [   em] quantifying the abundances ... done
+# [   em] the Expectation-Maximization algorithm ran for 52 rounds
+
+#/Filers/package/python/3.5.3/lib/python3.5/site-packages/IPython/html.py:14: ShimWarning: The `IPython.html` package has been deprecated since IPython 4.0. You should import from `notebook` instead. `IPython.html.widgets` has moved to `ipywidgets`.
+#  "`IPython.html.widgets` has moved to `ipywidgets`.", ShimWarning)
+#Traceback (most recent call last):
+#  File "/package/tracer/implementing_build-20170413/bin/tracer", line 11, in <module>
+#    load_entry_point('tracer==0.1', 'console_scripts', 'tracer')()
+#TypeError: 'module' object is not callable
+
+# does seem to give filtered_TCR and unfiltered_TCR files but they're the same??
+
+# downloaded setup.py file and followed download instructions from https://github.com/Teichlab/tracer. Installed on own conda (not sure where exactly!)
+
+# Adjusted tracer.conf file.
+
+#Configuration file for TraCeR#
+
+[tool_locations]
+#paths to tools used by TraCeR for alignment, quantitation, etc
+#bowtie2_path = /databank/igenomes/Homo_sapiens/UCSC/hg38/Sequence/Bowtie2Index
+#bowtie2-build_path = /path/to/bowtie2-build
+#igblastn_path = /path/to/igblastn
+#makeblastdb_path = /path/to/makeblastdb
+#kallisto_path = /path/to/kallisto
+#salmon_path = /path/to/salmon
+#trinity_path = /path/to/trinity
+#dot_path = /path/to/dot
+#neato_path = /path/to/neato
+
+
+[trinity_options]
+#line below specifies maximum memory for Trinity Jellyfish component. Set it appropriately for your environment.
+max_jellyfish_memory = 1G
+
+#uncomment the line below if you've got a configuration file for Trinity to use a computing grid 
+#trinity_grid_conf = /path/to/trinity/grid.conf
+
+#uncomment the line below to explicitly specify Trinity version. Options are '1' or '2'
+trinity_version = 1
+
+
+[IgBlast_options]
+igblast_seqtype = TCR
+
+[base_transcriptomes]
+# reference transcriptomes for kallisto/salmon
+Mmus = /path/to/kallisto/transcriptome_for_Mmus
+Hsap = /databank/igenomes/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa
+
+[salmon_options]
+# line below specifies type of sequencing library for Salmon; if not specified, automatic detection (--libType A) is used 
+#libType = A
+
+# line below specifies minimum acceptable length for valid match in salmon's quasi mapping; if not specified, default value of 31 is used
+#kmerLen = 31
+#
+
+
+[bowtie2_options]
+synthetic_genome_index_path = /package/tracer/implementing_build-20170413/resources/Hsap/combinatorial_recombinomes
+
