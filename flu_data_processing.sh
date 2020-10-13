@@ -156,3 +156,133 @@ Hsap = /databank/igenomes/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genom
 [bowtie2_options]
 synthetic_genome_index_path = /package/tracer/implementing_build-20170413/resources/Hsap/combinatorial_recombinomes
 
+##Tracer requirements##
+
+# Start again with tracer conda environment
+# Realised that it’s not asking for those specific versions, it’s just asking for that version or newer. So don’t necessarily need to install exact version number specified!
+
+# Git clone tracer repository
+
+# Packages to install in order
+Python
+Bowtie2
+Trinity
+Kallisto
+Numpy
+Biopython
+
+pip install –r requirements.txt
+
+python setup.py install
+
+# Adjusted tracer.conf with base transcriptomes (mouse and human)
+
+tracer test -p 10 -c tracer.conf
+
+# error with biopython - downgrade one version to 1.77
+
+tracer test -p 10 -c tracer.conf
+
+(tracer_env) [lfelce@deva tracer]$ tracer test -p 10 -c tracer.conf
+##Finding recombinant-derived reads##
+Attempting new assembly for ['TCR_A', 'TCR_B']
+
+##TCR_A##
+1135 reads; of these:
+  1135 (100.00%) were paired; of these:
+    571 (50.31%) aligned concordantly 0 times
+    564 (49.69%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+    ----
+    571 pairs aligned concordantly 0 times; of these:
+      0 (0.00%) aligned discordantly 1 time
+    ----
+    571 pairs aligned 0 times concordantly or discordantly; of these:
+      1142 mates make up the pairs; of these:
+        1010 (88.44%) aligned 0 times
+        0 (0.00%) aligned exactly 1 time
+        132 (11.56%) aligned >1 times
+55.51% overall alignment rate
+##TCR_B##
+1135 reads; of these:
+  1135 (100.00%) were paired; of these:
+    687 (60.53%) aligned concordantly 0 times
+    448 (39.47%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+    ----
+    687 pairs aligned concordantly 0 times; of these:
+      0 (0.00%) aligned discordantly 1 time
+    ----
+    687 pairs aligned 0 times concordantly or discordantly; of these:
+      1374 mates make up the pairs; of these:
+        1267 (92.21%) aligned 0 times
+        7 (0.51%) aligned exactly 1 time
+        100 (7.28%) aligned >1 times
+44.19% overall alignment rate
+
+##Assembling Trinity Contigs##
+##TCR_A##
+
+
+     ______  ____   ____  ____   ____  ______  __ __
+    |      ||    \ |    ||    \ |    ||      ||  |  |
+    |      ||  D  ) |  | |  _  | |  | |      ||  |  |
+    |_|  |_||    /  |  | |  |  | |  | |_|  |_||  ~  |
+      |  |  |    \  |  | |  |  | |  |   |  |  |___, |
+      |  |  |  .  \ |  | |  |  | |  |   |  |  |     |
+      |__|  |__|\_||____||__|__||____|  |__|  |____/
+
+    Trinity-v2.8.5
+
+
+
+Left read files: $VAR1 = [
+          '/home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_A_1.fastq'
+        ];
+Right read files: $VAR1 = [
+          '/home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_A_2.fastq'
+        ];
+Trinity version: Trinity-v2.8.5
+** NOTE: Latest version of Trinity is v2.11.0, and can be obtained at:
+	https://github.com/trinityrnaseq/trinityrnaseq/releases
+
+Argument "error" isn't numeric in numeric ne (!=) at /t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin/Trinity line 3812.
+Error, need samtools installed that is at least as new as version 1.3 at /t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin/Trinity line 3813.
+*** WARNING *** Trinity command ['/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin/Trinity', '--seqType', 'fq', '--max_memory', '1G', '--CPU', '10', '--full_cleanup', '--no_normalize_reads', '--left', '/home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_A_1.fastq', '--right', '/home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_A_2.fastq', '--output', '/home/molimm/lfelce/tracer/test_data/results/cell1/Trinity_output/Trinity_cell1_TCR_A'] failed for locus TCR_A
+##TCR_B##
+
+
+     ______  ____   ____  ____   ____  ______  __ __
+    |      ||    \ |    ||    \ |    ||      ||  |  |
+    |      ||  D  ) |  | |  _  | |  | |      ||  |  |
+    |_|  |_||    /  |  | |  |  | |  | |_|  |_||  ~  |
+      |  |  |    \  |  | |  |  | |  |   |  |  |___, |
+      |  |  |  .  \ |  | |  |  | |  |   |  |  |     |
+      |__|  |__|\_||____||__|__||____|  |__|  |____/
+
+    Trinity-v2.8.5
+
+
+
+Left read files: $VAR1 = [
+          '/home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_B_1.fastq'
+        ];
+Right read files: $VAR1 = [
+          '/home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_B_2.fastq'
+        ];
+Trinity version: Trinity-v2.8.5
+** NOTE: Latest version of Trinity is v2.11.0, and can be obtained at:
+	https://github.com/trinityrnaseq/trinityrnaseq/releases
+
+Argument "error" isn't numeric in numeric ne (!=) at /t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin/Trinity line 3812.
+Error, need samtools installed that is at least as new as version 1.3 at /t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin/Trinity line 3813.
+*** WARNING *** Trinity command ['/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin/Trinity', '--seqType', 'fq', '--max_memory', '1G', '--CPU', '10', '--full_cleanup', '--no_normalize_reads', '--left', '/home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_B_1.fastq', '--right', '/home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_B_2.fastq', '--output', '/home/molimm/lfelce/tracer/test_data/results/cell1/Trinity_output/Trinity_cell1_TCR_B'] failed for locus TCR_B
+No successful Trinity assemblies
+##No recombinants found##
+(tracer_env) [lfelce@deva tracer]$ samtools --version
+samtools: error while loading shared libraries: libcrypto.so.1.0.0: cannot open shared object file: No such file or directory
+
+
+# failing at trinity step - try running trinity command separately
+Trinity --seqType fq --left reads_1.fq --right reads_2.fq --CPU 6 --max_memory 20G
+
