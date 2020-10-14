@@ -286,3 +286,42 @@ samtools: error while loading shared libraries: libcrypto.so.1.0.0: cannot open 
 # failing at trinity step - try running trinity command separately
 Trinity --seqType fq --left reads_1.fq --right reads_2.fq --CPU 6 --max_memory 20G
 
+Trinity --seqType fq --max_memory 1G --CPU 10 --full_cleanup --no_normalize_reads --left /home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_B_1.fastq --right /home/molimm/lfelce/tracer/test_data/results/cell1/aligned_reads/cell1_TCR_B_2.fastq --output /home/molimm/lfelce/tracer/test_data/results/cell1/Trinity_output/Trinity_cell1_TCR_B
+
+conda update samtools 
+
+# updated from 1.7 to 1.11
+
+# tested separately after update, worked fine
+
+# fixed trinity, new error
+
+Traceback (most recent call last):
+  File "/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin/tracer", line 33, in <module>
+    sys.exit(load_entry_point('tracer==0.5', 'console_scripts', 'tracer')())
+  File "/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/lib/python3.8/site-packages/tracer-0.5-py3.8.egg/tracerlib/launcher.py", line 43, in launch
+    Task().run()
+  File "/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/lib/python3.8/site-packages/tracer-0.5-py3.8.egg/tracerlib/tasks.py", line 1217, in run
+    Assembler(resource_dir=self.resource_dir, ncores=str(self.ncores),
+  File "/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/lib/python3.8/site-packages/tracer-0.5-py3.8.egg/tracerlib/tasks.py", line 372, in run
+    cell = self.ig_blast()
+  File "/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/lib/python3.8/site-packages/tracer-0.5-py3.8.egg/tracerlib/tasks.py", line 489, in ig_blast
+    igblastn = self.get_binary('igblastn')
+  File "/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/lib/python3.8/site-packages/tracer-0.5-py3.8.egg/tracerlib/tasks.py", line 69, in get_binary
+    return check_binary(name, user_path)
+  File "/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/lib/python3.8/site-packages/tracer-0.5-py3.8.egg/tracerlib/io.py", line 154, in check_binary
+    raise OSError(
+OSError: Required binary not found: igblastn. Please add to PATH or specify location in config file.
+
+# igblast additional directories required - folders on ftp renamed to old optional file and old internal data.
+# ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/
+# use wget -r to download all the files in the directories
+
+wget -r ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/old_internal_data/
+wget -r ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/old_optional_file/
+
+# renamed folders internal data and optional file
+
+# still getting same error message - probably need to do wget -r for whole directory and point to latest version.
+
+
