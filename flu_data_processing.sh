@@ -328,3 +328,82 @@ wget -r ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/
 # path to ignblastn (had to unzip tar.gz folder)
 # /home/molimm/lfelce/ftp.ncbi.nih.gov/blast/executables/igblast/release/1.16.0/ncbi-igblast-1.16.0/bin
 
+# wasn't working so decided to try older version of igblastn that was mentioned in tracer readme.
+# set envionmental variable - setting it as IGDATA wasn't working, as when typed which igblastn it was looking in the wrong place.
+# had to set in environmental variable PATH
+PATH='/t1-home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin:/grid/sge/bin/lx26-amd64:/package/cufflinks/2.2.1/bin:/package/bowtie2/2.1.0/bin:/package/bowtie2/2.1.0/scripts:/usr/local/pkgbin:/package/cbrg/bin:/grid/sge/bin/lx26-amd64:/package/cufflinks/2.2.1/bin:/package/bowtie2/2.1.0/bin:/package/bowtie2/2.1.0/scripts:/usr/local/pkgbin:/package/cbrg/bin:/t1-home/molimm/lfelce/conda/obds_conda_install/condabin:/grid/sge/bin/lx26-amd64:/usr/lib64/qt-3.3/bin:/package/cufflinks/2.2.1/bin:/package/bowtie2/2.1.0/bin:/package/bowtie2/2.1.0/scripts:/usr/local/pkgbin:/package/cbrg/bin:/usr/local/bin:/bin:/usr/bin:/opt/dell/srvadmin/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/molimm/lfelce/ftp.ncbi.nih.gov/blast/executables/igblast/release/1.4.0/ncbi-igblast-1.4.0/bin'
+
+# actually realised had put it in tracer.conf but left # would have probably worked without having to set environmental variable!!
+# also had to move internal_data and optional_file folders into bin folder
+
+#Configuration file for TraCeR#
+
+[tool_locations]
+#paths to tools used by TraCeR for alignment, quantitation, etc
+##UNCOMMENT IF WANT TO USE PATH!
+
+#bowtie2_path = /home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin
+#bowtie2-build_path = /path/to/bowtie2-build
+#igblastn_path = /home/molimm/lfelce/ftp.ncbi.nih.gov/blast/executables/igblast/release/1.4.0/ncbi-igblast-1.4.0/bin
+#makeblastdb_path = /path/to/makeblastdb
+#kallisto_path = /home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin
+#salmon_path = /path/to/salmon
+#trinity_path = /home/molimm/lfelce/conda/obds_conda_install/envs/tracer_env/bin
+#dot_path = /path/to/dot
+#neato_path = /path/to/neato
+
+
+[trinity_options]
+#line below specifies maximum memory for Trinity Jellyfish component. Set it appropriately for your environment.
+max_jellyfish_memory = 1G
+
+#uncomment the line below if you've got a configuration file for Trinity to use a computing grid 
+#trinity_grid_conf = /path/to/trinity/grid.conf
+
+#uncomment the line below to explicitly specify Trinity version. Options are '1' or '2'
+trinity_version = 2
+
+#### <---- beginning of trinity specialized options
+# additional Trinity options in case you're dealing with very short reads (say 25 base reads)
+# and want to achieve high sensitivity with questionable specificity, in other words
+# trying to extract whatever you can from the data you have:
+
+###  note, default Trinity kmer length is 25
+#trinity_kmer_length = 17
+
+### below stops trinity at the initial inchworm (greedy kmer extension) step.
+#inchworm_only = True
+
+#### end of trinity specialized options ---->
+
+
+[IgBlast_options]
+igblast_seqtype = TCR
+
+[base_transcriptomes]
+# reference transcriptomes for kallisto/salmon.  Just point to the raw transcriptome fasta files.
+Mmus = /databank/igenomes/Mus_musculus/UCSC/mm10/Sequence/WholeGenomeFasta/genome.fa
+Hsap = /databank/igenomes/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa
+
+[salmon_base_indices]
+# salmon indices created from [base_transcriptomes] above; needed only when option --small_index is used
+Mmus = /path/to/salmon/index_for_Mmus
+Hsap = /path/to/salmon/index_for_Hsap
+
+[kallisto_base_indices]
+# kallisto indices created from [base_transcriptomes] above; needed only when option --small_index is used
+Mmus = /path/to/kallisto/index_for_Mmus
+Hsap = /path/to/kallisto/index_for_Hsap
+
+[salmon_options]
+# line below specifies type of sequencing library for Salmon; if not specified, automatic detection (--libType A) is used 
+#libType = A
+
+# line below specifies minimum acceptable length for valid match in salmon's quasi mapping; if not specified, default value of 31 is used
+#kmerLen = 31
+
+[tracer_location]
+#Path to direcetory where TraCeR was originally downloaded
+tracer_path = /home/molimm/lfelce/tracer
+
+tracer test -p 10 -c tracer.conf -r # -r so don't repeat everything again if resuming from failed test
