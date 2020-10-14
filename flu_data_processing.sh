@@ -323,5 +323,8 @@ wget -r ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/old_optional_fi
 # renamed folders internal data and optional file
 
 # still getting same error message - probably need to do wget -r for whole directory and point to latest version.
+wget -r ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/
 
+# path to ignblastn (had to unzip tar.gz folder)
+# /home/molimm/lfelce/ftp.ncbi.nih.gov/blast/executables/igblast/release/1.16.0/ncbi-igblast-1.16.0/bin
 
