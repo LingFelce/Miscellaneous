@@ -30,5 +30,9 @@ for i in `cat ./ID`; do cat $i\_L001_R1_001.fastq.gz  $i\_L002_R1_001.fastq.gz  
 for i in `cat ./ID`; do cat $i\_L001_R2_001.fastq.gz  $i\_L002_R2_001.fastq.gz  $i\_L003_R2_001.fastq.gz  $i\_L004_R2_001.fastq.gz > merge_201022/$i\_R2_001.fastq.gz; done
 
 # repeat for 2nd run 20th October (2nd pool only has 47 samples)
-# for some reason find command not working any more, keeps saying missing file operand?
+# moved .fastq files out of subfolders, somehow moved up 1 level into LF_proj04_2 folder instead of FASTQ folder
+
+for i in `cat ./ID`; do cat $i\_L001_R1_001.fastq.gz  $i\_L002_R1_001.fastq.gz  $i\_L003_R1_001.fastq.gz  $i\_L004_R1_001.fastq.gz > merge_201020/$i\_R1_001.fastq.gz; done
+for i in `cat ./ID`; do cat $i\_L001_R2_001.fastq.gz  $i\_L002_R2_001.fastq.gz  $i\_L003_R2_001.fastq.gz  $i\_L004_R2_001.fastq.gz > merge_201020/$i\_R2_001.fastq.gz; done
+
 
