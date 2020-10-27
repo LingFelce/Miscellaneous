@@ -46,6 +46,11 @@ for i in `cat ./ID`; do cat $i\_L001_R2_001.fastq.gz  $i\_L002_R2_001.fastq.gz  
 for i in `cat ./ID`; do cat /ifs/research-groups/botnar/proj033/backup/tma_raw_files/LF_proj04/FASTQ_Generation_2020-10-17/merge_201017/$i\_R1_001.fastq.gz  /ifs/research-groups/botnar/proj033/backup/tma_raw_files/LF_proj04/FASTQ_Generation_2020-10-22/merge_201022/$i\_R1_001.fastq.gz > merged_files/$i\_R1_001.fastq.gz; done
 for i in `cat ./ID`; do cat /ifs/research-groups/botnar/proj033/backup/tma_raw_files/LF_proj04/FASTQ_Generation_2020-10-17/merge_201017/$i\_R2_001.fastq.gz  /ifs/research-groups/botnar/proj033/backup/tma_raw_files/LF_proj04/FASTQ_Generation_2020-10-22/merge_201022/$i\_R2_001.fastq.gz > merged_files/$i\_R2_001.fastq.gz; done
 
+# merged files + 2nd run
+for i in `cat ./ID`; do cat /ifs/research-groups/botnar/proj033/backup/tma_raw_files/LF_proj04/FASTQ_Generation_2020-10-17/merge_201017/$i\_R1_001.fastq.gz  /ifs/research-groups/botnar/proj033/backup/tma_raw_files/LF_proj04/FASTQ_Generation_2020-10-22/merge_201022/$i\_R1_001.fastq.gz > merged_files/$i\_R1_001.fastq.gz; done
+
+echo cat TMA-R2_*_R1_001 > TMA-R2_R1_001
+
 # soft links to src folder (do in folder that you want to move files to)
 # find /t1-data/user/ypeng/P170335/downloaded_files/lane1 -name "*.fastq.gz" | xargs -I v_f ln -s v_f
 # find /t1-data/user/ypeng/P170335/downloaded_files/lane2 -name "*.fastq.gz" | xargs -I v_f ln -s v_f
