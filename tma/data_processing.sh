@@ -62,22 +62,24 @@ md5sum -c md5sum.txt
 # get list of file names
 ls > names
 
-# downsampling
+# downsample all files in merged_files folder, put in subfolder downsample
+# example
+for fq in *.fastq
+do
+	sampleName=$(echo $fq | cut -f 1 -d '.')
+	echo $sampleName
+	seqtk seq -A $fq > $sampleName\.fasta
 
-# seqtk sample -s100 *fastq.gz 20000000 > downsample/*fastq.gz
+done
 
-# for file in /merged_files/*; do seqtk sample -s100 "$file" >> downsample/$file; done
+# actual downsampling command
+for fq in *.fastq.gz
+do 
+  name=$(echo $fq | cut -f 1 -d '.')
+  echo $name
+  seqtk sample -s100 $fq 20000000 > downsample/$name\.fastq
+done
 
-
-# find . -type f -print0 | xargs -0 seqtk sample -s 100 $file 20000000 > downsample/$file; done
-
-#for i in *.txt; do echo "hello $i"; done
-
-#for file in /merged_files/*; do seqtk sample -s 100 $file 20000000 > downsample/$file; done
-
-#for file in /test/*; do cat $file > test2/$file; done
-
-#for i in `seqtk sample -s100 ./ID2`; do seqtk sample -s100 merged_files/$i 20000000 > downsample/$i; done
 
 # soft links to src folder (do in folder that you want to move files to)
 # find /t1-data/user/ypeng/P170335/downloaded_files/lane1 -name "*.fastq.gz" | xargs -I v_f ln -s v_f
