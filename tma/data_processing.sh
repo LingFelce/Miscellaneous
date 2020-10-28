@@ -53,11 +53,29 @@ for i in `cat ./ID`; do cat /ifs/research-groups/botnar/proj033/backup/tma_raw_f
 for i in `cat ./ID`; do cat run1_run3/$i\_S*_R1_001.fastq.gz LF_proj04_2/FASTQ_Generation_2020-10-20/$i\_S*_R1_001.fastq.gz > merged_files/$i\_R1_001.fastq.gz; done
 for i in `cat ./ID`; do cat run1_run3/$i\_S*_R2_001.fastq.gz LF_proj04_2/FASTQ_Generation_2020-10-20/$i\_S*_R2_001.fastq.gz > merged_files/$i\_R2_001.fastq.gz; done
 
+# check md5sum
+md5sum *fastq.gz > md5sum.txt
+md5sum -c md5sum.txt
+
 # get list of file names
 ls > names
 
 # downsampling
-for i in `seqtk ./names`; do seqtk sample -s100 merged_files/*.fastq.gz 20000000 > downsample/*.fastq.gz; done
+
+seqtk sample -s100 *fastq.gz 20000000 > downsample/*fastq.gz
+
+for file in /merged_files/*; do seqtk sample -s100 "$file" >> downsample/$file; done
+
+
+find . -type f -print0 | xargs -0 seqtk sample -s 100 $file 20000000 > downsample/$file; done
+
+for i in *.txt; do echo "hello $i"; done
+
+for file in /merged_files/*; do seqtk sample -s 100 $file 20000000 > downsample/$file; done
+
+for file in /test/*; do cat $file > test2/$file; done
+
+for i in `seqtk sample -s100 ./ID2`; do seqtk sample -s100 merged_files/$i 20000000 > downsample/$i; done
 
 # soft links to src folder (do in folder that you want to move files to)
 # find /t1-data/user/ypeng/P170335/downloaded_files/lane1 -name "*.fastq.gz" | xargs -I v_f ln -s v_f
