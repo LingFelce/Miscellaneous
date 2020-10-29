@@ -80,11 +80,11 @@ do
   seqtk sample -s100 $fq 20000000 > downsample/$name\.fastq
 done
 
-# downsample files are .fastq, need to zip
+# downsample files are .fastq, need to zip (.fastq files will disappear)
 gzip *fastq
 
 # soft links to src folder (do in folder that you want to move files to)
-# find /t1-data/user/ypeng/P170335/downloaded_files/lane1 -name "*.fastq.gz" | xargs -I v_f ln -s v_f
-# find /t1-data/user/ypeng/P170335/downloaded_files/lane2 -name "*.fastq.gz" | xargs -I v_f ln -s v_f
+find /ifs/research-groups/botnar/proj033/backup/tma_raw_files/merged_files/downsample -name "*.fastq.gz" | xargs -I v_f ln -s v_f
+
 
 
