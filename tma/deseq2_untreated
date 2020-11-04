@@ -1,0 +1,239 @@
+---
+title: "DESeq2_untreated"
+output:
+  html_document: default
+  always_allow_html: true
+  word_document: default
+---
+
+Update: 4th November 2020
+
+# Differential gene expression using DESeq2
+
+Differential gene expression using DESeq2 and visualisation with Venn diagrams. Using Adam's code, some from https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source('functions.R')
+library(org.Hs.eg.db)
+library(AnnotationDbi)
+library(DESeq2)
+library(pheatmap)
+library(tidyverse)
+library(DT)
+library(limma)
+library(pheatmap)
+# to convert to HTML document, type in Console > rmarkdown::render(input = "file_name.Rmd", output_format = "html_document", output_file = NULL) - have to do HTML due to tab layout
+```
+
+
+```{r}
+metadata_untreated <- read.table("metadata_untreated.csv", sep=",", header = TRUE)
+rownames(metadata_untreated) <- metadata_untreated$Samples
+colnames(txi.untreated$counts) <- rownames(metadata_untreated)
+all(rownames(metadata_untreated) %in% colnames(txi.untreated$counts))
+```
+
+
+```{r}
+# only need to separate metadata if comparing different patients
+
+# set up meta_data
+# meta_data_1 <- meta_data %>% 
+  # filter(Cell_line == "MCF") %>% 
+  # column_to_rownames("Samples")
+
+```
+
+
+
+```{r, message=FALSE, eval=FALSE}
+## Set up the DESeq2 object
+df_mRNA <-  txi.untreated
+deseq2_txi <- function(df_mRNA, metadata_untreated, control="day_0", test="day_3", value){
+    dds<- DESeqDataSetFromTximport(df_mRNA, metadata_untreated, ~Condition1)
+  
+  keep <- rowSums(counts(dds)) >= 10
+  dds <- dds[keep,]
+  
+  dds <- DESeq(dds)
+  
+  res <- results(dds, contrast = c(value, test, control))
+  
+  return(res)
+}
+res_0v3 <- deseq2_txi(df_mRNA, metadata_untreated, control = "day_0", test="day_3", value="Condition1")
+
+res_0v7 <- deseq2_txi(df_mRNA, metadata_untreated, control = "day_0", test="day_7", value="Condition1")
+
+res_3v7 <- deseq2_txi(df_mRNA, metadata_untreated, control = "day_3", test="day_7", value="Condition1")
+```
+
+The following describes the analysis of the data using DEseq2. I have separated the analyses into three different contrasts and have plotted summary statistics and MA plots for each.  
+
+
+## Summary of the data
+
+### Day 0 v Day 3
+
+```{r}
+summary(res_0v3, alpha=0.05)
+```
+
+### Day 0 v Day 7
+
+```{r}
+summary(res_0v7, alpha=0.05)
+```
+
+### Day 3 v Day 7
+
+```{r}
+summary(res_3v7, alpha=0.05)
+```
+
+
+## MA plots 
+
+In DESeq2, the function plotMA shows the log2 fold changes attributable to a given variable over the mean of normalized counts for all the samples in the DESeqDataSet. Points will be coloured blue if the adjusted p value is less than 0.01. Points which fall out of the window are plotted as open triangles pointing either up or down.
+
+### Day 0 v Day 3
+
+```{r, fig.width=8, fig.height=5}
+DESeq2::plotMA(res_0v3)
+```
+
+### Day 0 v Day 7
+
+```{r, fig.width=8, fig.height=5}
+DESeq2::plotMA(res_0v7)
+```
+
+### Day 3 v Day 7
+
+```{r, fig.width=8, fig.height=5}
+DESeq2::plotMA(res_3v7)
+```
+
+## Volcano plots 
+
+### Day 0 v Day 3
+
+```{r, message=FALSE, , fig.width=8, fig.height=6}
+library("ggplot2") #Best plots
+library("ggrepel") #Avoid overlapping labels
+test <- as.data.frame(res_0v3)
+  
+data <- as.vector(rownames(test))
+annots <-  AnnotationDbi::select(org.Hs.eg.db, keys=data,
+                                   columns="SYMBOL", keytype = "ENSEMBL")
+  
+result <- merge(test, annots, by.x="row.names", by.y="ENSEMBL")
+res <- result %>% 
+    dplyr::select(log2FoldChange, SYMBOL, baseMean, padj, Row.names) %>% 
+    na.omit()
+  
+mutateddf <- mutate(res, sig=ifelse(res$padj<0.05, "padj<0.05", "Not Sig")) #Will have different colors depending on significance
+input <- cbind(gene=rownames(mutateddf), mutateddf )
+input <- input %>% 
+  arrange(input$padj)
+#convert the rownames to a column
+volc = ggplot(input, aes(log2FoldChange, -log10(padj))) + #volcanoplot with log2Foldchange versus pvalue
+    geom_point(aes(col=sig)) + #add points colored by significance
+    ggtitle("Day 0 v Day 3") #e.g. 'Volcanoplot DESeq2'
+volc
+#Save Volcano Plot
+# ggsave("volcano/MCF_DMSOvSGC_24H.jpeg", device="jpeg") #In case you want to easily save to disk
+```
+
+### Day 0 v Day 7
+
+```{r, message=FALSE, fig.width=8, fig.height=6}
+library("ggplot2") #Best plots
+library("ggrepel") #Avoid overlapping labels
+test <- as.data.frame(res_0v7)
+  
+data <- as.vector(rownames(test))
+annots <-  AnnotationDbi::select(org.Hs.eg.db, keys=data,
+                                   columns="SYMBOL", keytype = "ENSEMBL")
+  
+result <- merge(test, annots, by.x="row.names", by.y="ENSEMBL")
+res <- result %>% 
+    dplyr::select(log2FoldChange, SYMBOL, baseMean, padj, Row.names) %>% 
+    na.omit()
+  
+mutateddf <- mutate(res, sig=ifelse(res$padj<0.05, "padj<0.05", "Not Sig")) #Will have different colors depending on significance
+input <- cbind(gene=rownames(mutateddf), mutateddf )
+input <- input %>% 
+  arrange(input$padj)
+#convert the rownames to a column
+volc = ggplot(input, aes(log2FoldChange, -log10(padj))) + #volcanoplot with log2Foldchange versus pvalue
+    geom_point(aes(col=sig)) + #add points colored by significance
+    ggtitle("Day 0 v Day 7") #e.g. 'Volcanoplot DESeq2'
+volc
+#Save Volcano Plot
+# ggsave("volcano/MCF_DMSOvSGC_7D.jpeg", device="jpeg") #In case you want to easily save to disk
+```
+
+### Day 3 v Day 7
+
+```{r, message=FALSE, fig.width=8, fig.height=6}
+library("ggplot2") #Best plots
+library("ggrepel") #Avoid overlapping labels
+test <- as.data.frame(res_3v7)
+  
+data <- as.vector(rownames(test))
+annots <-  AnnotationDbi::select(org.Hs.eg.db, keys=data,
+                                   columns="SYMBOL", keytype = "ENSEMBL")
+  
+result <- merge(test, annots, by.x="row.names", by.y="ENSEMBL")
+res <- result %>% 
+    dplyr::select(log2FoldChange, SYMBOL, baseMean, padj, Row.names) %>% 
+    na.omit()
+  
+mutateddf <- mutate(res, sig=ifelse(res$padj<0.05, "padj<0.05", "Not Sig")) #Will have different colors depending on significance
+input <- cbind(gene=rownames(mutateddf), mutateddf )
+input <- input %>% 
+  arrange(input$padj)
+#convert the rownames to a column
+volc = ggplot(input, aes(log2FoldChange, -log10(padj))) + #volcanoplot with log2Foldchange versus pvalue
+    geom_point(aes(col=sig)) + #add points colored by significance
+    ggtitle("Day 3 v Day 7") #e.g. 'Volcanoplot DESeq2'
+volc
+#Save Volcano Plot
+# ggsave("volcano/MCF_DMSOvSGC_7D.jpeg", device="jpeg") #In case you want to easily save to disk
+```
+
+
+
+
+## Results tables
+
+The folowing results tables show the significant genes (p<0.05). Filtering has been performed with a log2 fold change +/- 2. These have been exported as .csv files where _res.csv is all genes, and _sig.csv is significant genes (p<0.05) with LFC +/-2 (see results folder)
+
+
+### Day 0 v Day 3
+
+```{r, message=FALSE}
+dt <- filter_genes(as.data.frame(res_0v3), name="day0v3")
+datatable(dt$sig)
+```
+
+
+### Day 0 v Day 7
+
+```{r, message=FALSE}
+dt <- filter_genes(as.data.frame(res_0v7), name="day0v7")
+datatable(dt$sig)
+```
+
+### Day 3 v Day 7
+
+```{r, message=FALSE}
+dt <- filter_genes(as.data.frame(res_3v7), name="day3v7")
+datatable(dt$sig)
+```
+
+
+
