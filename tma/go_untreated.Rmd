@@ -57,30 +57,111 @@ day0v3_ego <- enrichGO(gene = geneset,
 dim(day0v3_ego)
 
 day0v3_GOgenes <- data.frame(day0v3_ego$ID, day0v3_ego$Description, day0v3_ego$p.adjust, day0v3_ego$geneID)
+
+simp_day0v3_ego <- simplify(day0v3_ego)
+
+dim(simp_day0v3_ego)
+
+simp_day0v3_GOgenes <- data.frame(simp_day0v3_ego$ID, simp_day0v3_ego$Description, simp_day0v3_ego$p.adjust, simp_day0v3_ego$geneID)
+
 #Copy and paste into Excel
 ```
 ### Showing the ego object in graphical form
 
 ```{r,fig.height=4, fig.width=6}
-barplot (day0v3_ego, showCategory = 10)
-dotplot (day0v3_ego, showCategory=10)
+barplot (simp_day0v3_ego, showCategory = 10)
+dotplot (simp_day0v3_ego, showCategory=10)
 #can use simplify() to remove redundant terms, but can be slow eg barplot(simplify(ego))
 ```
 
 We can look into the relation of the enriched GO terms using the `emapplot()` function. You will need to increase the height and width of the image so that the terms don't overlap.  
 
 ```{r, fig.height=8, fig.width=10}
-emapplot(day0v3_ego)
+emapplot(simp_day0v3_ego)
 ```
 
 We can use cnetplot() to display the relation of specific genes within the GO terms.
 
 ```{r, fig.height=12, fig.width=14}
 #logFC is optional, but if available will colour-code the nodes
-logFC_mcf <- day0v3_sig$log2FoldChange
+logFC_0v3 <- day0v3_sig$log2FoldChange
 #set name of object
-names(logFC_mcf) <- day0v3_sig$Entrez.Gene
-cnetplot(day0v3_ego, foldChange = logFC_mcf, showCategory = 5, circular = FALSE)
+names(logFC_0v3) <- day0v3_sig$Entrez.Gene
+cnetplot(simp_day0v3_ego, foldChange = logFC_0v3, showCategory = 5, circular = FALSE)
+#show 5 GO terms, if set circular to TRUE then GO terms won't be in middle, will be on edge of circle
+#size = number of genes, fold change = red for upregulated, green for downregulated
+```
+
+
+## Day 0 v Day 7
+
+### Filter data (process data)
+The data contains double entries or NA entries. We need to remove these for downstream analysis.
+
+```{r}
+library(readr)
+day0v7_sig <- read_csv("results/day0v7_sig.csv")
+
+# Use Ensembl IDs to map Entrez Gene IDs. Use #keytypes(org.Hs.eg.db) to check what column names are
+day0v7_sig$Entrez.Gene <- mapIds(org.Hs.eg.db, keys=as.character(day0v7_sig$Row.names), keytype="ENSEMBL", column="ENTREZID")
+#Keep only rows from table without NAs
+day0v7_sig <- day0v7_sig[is.na(day0v7_sig$Entrez.Gene)==FALSE,]
+#Remove duplicated entries
+day0v7_sig <- day0v7_sig[!duplicated(day0v7_sig$Entrez.Gene),]
+```
+
+### Gene Ontology (GO) over-representation test
+We are going to perform an over-representation test for our genes in GO terms from org.Hs.eg.db
+
+```{r}
+#Change Entrez IDs from numbers to characters
+geneset <- as.character(day0v7_sig$Entrez.Gene)
+#This will show Entrez IDs only
+head(geneset)
+#This will take a little while to run
+day0v7_ego <- enrichGO(gene = geneset, 
+                universe = NULL, #all available genes in database
+                OrgDb = org.Hs.eg.db, #Hs: homo sapiens
+                ont ="BP", #molecular function, biological process, cellular component
+                pAdjustMethod = "BH",
+                pvalueCutoff = 0.01,
+                qvalueCutoff = 0.05,  #q value is FDR adjusted p value
+                readable = TRUE) #will show gene symbol in images later rather than Entrez Gene ID
+#dimensions - number of GO terms
+dim(day0v7_ego)
+
+day0v7_GOgenes <- data.frame(day0v7_ego$ID, day0v7_ego$Description, day0v7_ego$p.adjust, day0v7_ego$geneID)
+
+simp_day0v7_ego <- simplify(day0v7_ego)
+
+dim(simp_day0v7_ego)
+
+simp_day0v7_GOgenes <- data.frame(simp_day0v7_ego$ID, simp_day0v7_ego$Description, simp_day0v7_ego$p.adjust, simp_day0v7_ego$geneID)
+
+#Copy and paste into Excel
+```
+### Showing the ego object in graphical form
+
+```{r,fig.height=4, fig.width=6}
+barplot (simp_day0v7_ego, showCategory = 10)
+dotplot (simp_day0v7_ego, showCategory=10)
+#can use simplify() to remove redundant terms, but can be slow eg barplot(simplify(ego))
+```
+
+We can look into the relation of the enriched GO terms using the `emapplot()` function. You will need to increase the height and width of the image so that the terms don't overlap.  
+
+```{r, fig.height=8, fig.width=10}
+emapplot(simp_day0v7_ego)
+```
+
+We can use cnetplot() to display the relation of specific genes within the GO terms.
+
+```{r, fig.height=12, fig.width=14}
+#logFC is optional, but if available will colour-code the nodes
+logFC_0v7 <- day0v7_sig$log2FoldChange
+#set name of object
+names(logFC_0v7) <- day0v7_sig$Entrez.Gene
+cnetplot(simp_day0v7_ego, foldChange = logFC_0v7, showCategory = 5, circular = FALSE)
 #show 5 GO terms, if set circular to TRUE then GO terms won't be in middle, will be on edge of circle
 #size = number of genes, fold change = red for upregulated, green for downregulated
 ```
