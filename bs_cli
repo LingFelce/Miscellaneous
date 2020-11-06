@@ -18,3 +18,19 @@ bs list runs
 bs download run -i 197263145 -o ./
 
 # install bcl2fastq
+
+wget ftp://webdata2:webdata2@ussd-ftp.illumina.com/downloads/software/bcl2fastq/bcl2fastq2-v2-20-0-tar.zip
+
+# use file manager mode to unzip file so that file ends .tar.gz
+
+# as can't download rpm file, have to install from source using .tar.gz file
+
+# set up environmental variables - build and source directories must be different
+export TMP=/t1-data/user/lfelce/tmp
+export SOURCE=${TMP}/bcl2fastq
+export BUILD=${TMP}/bcl2fastq2-build
+export INSTALL_DIR=/t1-data/user/lfelce/bcl2fastq2
+
+tar -xvzf <file name>
+
+# configuring incomplete, errors occurred
