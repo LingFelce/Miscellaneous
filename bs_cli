@@ -1,0 +1,20 @@
+# basespace command line interface
+
+# to switch user
+bs auth --force
+
+bs list runs
+
++---------------------------------+-----------+-----------------+----------+
+|              Name               |    Id     | ExperimentName  |  Status  |
++---------------------------------+-----------+-----------------+----------+
+| 200909_NB501183_0819_AHLLVLBGXG | 197260093 | Dong-Pools1-4   | Complete |
+| 200910_NB501183_0820_AH7LL2BGXG | 197263145 | DongPools5-8    | Complete |
+| 200910_NB502048_0489_AH7LLGBGXG | 197276079 | DongPools9-12   | Complete |
+| 201104_NB501183_0841_AH2CJCBGXH | 198352159 | DONGPOOL_121020 | Complete |
++---------------------------------+-----------+-----------------+----------+
+
+# will download all files associated with run into current folder
+bs download run -i 197263145 -o ./
+
+# install bcl2fastq
