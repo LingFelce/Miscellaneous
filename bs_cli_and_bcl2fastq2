@@ -33,4 +33,8 @@ export INSTALL_DIR=/t1-data/user/lfelce/bcl2fastq2
 
 tar -xvzf <file name>
 
-# configuring incomplete, errors occurred
+# followed instructions from user guide 
+# https://emea.support.illumina.com/content/dam/illumina-support/documents/documentation/software_documentation/bcl2fastq/bcl2fastq2-v2-20-software-guide-15051736-03.pdf
+
+# was getting a configuration error, realised that it was trying to use something in the conda environment tracer_env
+# removed tracer_env conda environment, seems to be working fine now.
