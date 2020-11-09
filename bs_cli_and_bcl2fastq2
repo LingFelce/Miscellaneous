@@ -24,6 +24,7 @@ wget ftp://webdata2:webdata2@ussd-ftp.illumina.com/downloads/software/bcl2fastq/
 # use file manager mode to unzip file so that file ends .tar.gz
 
 # as can't download rpm file, have to install from source using .tar.gz file
+# (actually did manage to download rpm file, but said permission denied - presumably need admin rights)
 
 # set up environmental variables - build and source directories must be different
 export TMP=/t1-data/user/lfelce/tmp
@@ -33,8 +34,10 @@ export INSTALL_DIR=/t1-data/user/lfelce/bcl2fastq2
 
 tar -xvzf <file name>
 
-# followed instructions from user guide 
+# followed instructions from user guide to build and install package
 # https://emea.support.illumina.com/content/dam/illumina-support/documents/documentation/software_documentation/bcl2fastq/bcl2fastq2-v2-20-software-guide-15051736-03.pdf
 
 # was getting a configuration error, realised that it was trying to use something in the conda environment tracer_env
 # removed tracer_env conda environment, seems to be working fine now.
+
+
