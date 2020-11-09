@@ -40,4 +40,23 @@ tar -xvzf <file name>
 # was getting a configuration error, realised that it was trying to use something in the conda environment tracer_env
 # removed tracer_env conda environment, seems to be working fine now.
 
+# convert and demultiplex BCL files - run in appropriate folder
 
+# submit as job script to slurm
+
+#!/bin/bash
+#SBATCH --partition=batch
+#SBATCH --job-name=bioinf_job
+#SBATCH --nodes=1
+#SBATCH --mem=128G
+#SBATCH --time=00-12:00:00
+#SBATCH --output=%j_%x.out
+#SBATCH --error=%j_%x.err
+#SBATCH --mail-user=your_email_address@gmail.com
+#SBATCH --mail-type=end,fail
+
+cd /t1-data/user/lfelce/Dong_Pools_5-8/
+
+# module load your_required_module
+
+nohup /t1-data/user/lfelce/bcl2fastq2/bin/bcl2fastq --runfolder-dir ./ --output-dir /Data/Intensities/BaseCalls/ -i /Data/Intensities/BaseCalls/ --sample-sheet 4x96into384demultiplex.csv 
