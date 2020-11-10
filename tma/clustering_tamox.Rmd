@@ -105,19 +105,19 @@ plotPCA(vsd, intgroup=c("Condition1"))
 
 ## PCA - by treatment
 
-```{r, fig.width=12, fig.height=10}
+```{r, fig.width=8, fig.height=6}
 plotPCA(vsd, intgroup=c("Condition2"))
 ```
 
 ## PCA - by patient and treatment
 
-```{r, fig.width=12, fig.height=12}
+```{r, fig.width=8, fig.height=6}
 plotPCA(vsd, intgroup=c("Patient", "Condition2"))
 ```
 
 ## PCA - by timepoint and treatment
 
-```{r, fig.width=12, fig.height=12}
+```{r, fig.width=8, fig.height=6}
 plotPCA(vsd, intgroup=c("Condition1", "Condition2"))
 
 ```
