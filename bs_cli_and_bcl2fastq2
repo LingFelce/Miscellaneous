@@ -59,15 +59,13 @@ cd /t1-data/user/lfelce/Dong_Pools_5-8/
 
 module load bcl2fastq
 
-bcl2fastq -i /Data/
-- R ./
---intensities-dir /Data/Intensities
--o /Data/Intensities/BaseCalls/
---interop-dir /Data/Intensities/BaseCalls
---stats-dir /Data/Intensities/BaseCalls
---reports-dir /Data/Intensities/BaseCalls
+bcl2fastq --input-dir /Data/Intensities/BaseCalls/
+--runfolder-dir ./
+--output-dir /Data/Intensities/BaseCalls/Output/
+--interop-dir /Data/Intensities/BaseCalls/InterOp/
+--stats-dir /Data/Intensities/BaseCalls/Stats/
+--reports-dir /Data/Intensities/BaseCalls/Reports/
 --sample-sheet 4x96into384demultiplex.csv 
-
 
 
 # list of available queues and nodes
