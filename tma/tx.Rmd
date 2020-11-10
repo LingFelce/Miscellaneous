@@ -47,6 +47,26 @@ names(txi.kallisto)
 head(txi.kallisto$counts)
 ```
 
+```{r tx untreated samples all patients}
+# direct R Studio to folders where abundance.h5 files are stored
+dir_untreated <- c("TMA-181-R1", "TMA-181-R2", "TMA-181-R8", "TMA-188-R1", "TMA-188-R2", "TMA-188-R8", "TMA-196-R1", "TMA-196-R2", "TMA-196-R8", "TMA-198-R1", "TMA-198-R2", "TMA-198-R6")
+files_untreated <- list.files(path=dir_untreated, pattern="*.h5", full.names=TRUE)
+# combine into one table
+names(files_untreated) <- paste0("TMA", 1:12)
+# read in kallisto type (transcript-level information)
+txi.untreated <- tximport(files_untreated, type = "kallisto", txOut=TRUE)
+head(txi.untreated$counts)
+```
+
+```{r gene untreated samples all patients}
+edb <- EnsDb.Hsapiens.v86
+k <- keys(edb, keytype = "TXID")
+tx2gene <- select(edb, k, "GENEID", "TXID")
+txi.untreated <- tximport(files_untreated, type = "kallisto", tx2gene = tx2gene)
+names(txi.untreated)
+head(txi.untreated$counts)
+```
+
 ```{r tx tamox samples 3 patients}
 # direct R Studio to folders where abundance.h5 files are stored
 dir_tamox <- c("TMA-181-R2", "TMA-181-R3", "TMA-181-R8", "TMA-181-R9", "TMA-188-R2","TMA-188-R3","TMA-188-R8","TMA-188-R9","TMA-196-R2","TMA-196-R3","TMA-196-R8","TMA-196-R9")
@@ -66,26 +86,7 @@ head(txi.tamox$counts)
 edb <- EnsDb.Hsapiens.v86
 k <- keys(edb, keytype = "TXID")
 tx2gene <- select(edb, k, "GENEID", "TXID")
-txi.tamox <- tximport(files, type = "kallisto", tx2gene = tx2gene)
+txi.tamox <- tximport(files_tamox, type = "kallisto", tx2gene = tx2gene)
 names(txi.tamox)
 head(txi.tamox$counts)
-```
-```{r tx untreated samples all patients}
-# direct R Studio to folders where abundance.h5 files are stored
-dir_untreated <- c("TMA-181-R1", "TMA-181-R2", "TMA-181-R8", "TMA-188-R1", "TMA-188-R2", "TMA-188-R8", "TMA-196-R1", "TMA-196-R2", "TMA-196-R8", "TMA-198-R1", "TMA-198-R2", "TMA-198-R6")
-files_untreated <- list.files(path=dir_untreated, pattern="*.h5", full.names=TRUE)
-# combine into one table
-names(files_untreated) <- paste0("TMA", 1:12)
-# read in kallisto type (transcript-level information)
-txi.untreated <- tximport(files_untreated, type = "kallisto", txOut=TRUE)
-head(txi.untreated$counts)
-```
-
-```{r gene untreated samples all patients}
-edb <- EnsDb.Hsapiens.v86
-k <- keys(edb, keytype = "TXID")
-tx2gene <- select(edb, k, "GENEID", "TXID")
-txi.untreated <- tximport(files, type = "kallisto", tx2gene = tx2gene)
-names(txi.untreated)
-head(txi.untreated$counts)
 ```
