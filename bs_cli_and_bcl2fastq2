@@ -57,9 +57,18 @@ tar -xvzf <file name>
 
 cd /t1-data/user/lfelce/Dong_Pools_5-8/
 
-# module load your_required_module
+module load bcl2fastq
 
-nohup /t1-data/user/lfelce/bcl2fastq2/bin/bcl2fastq --runfolder-dir ./ --output-dir /Data/Intensities/BaseCalls/ -i /Data/Intensities/BaseCalls/ --sample-sheet 4x96into384demultiplex.csv --stats-dir /Data/Intensities/BaseCalls/Stats/ 
+bcl2fastq -i /Data/
+- R ./
+--intensities-dir /Data/Intensities
+-o /Data/Intensities/BaseCalls/
+--interop-dir /Data/Intensities/BaseCalls
+--stats-dir /Data/Intensities/BaseCalls
+--reports-dir /Data/Intensities/BaseCalls
+--sample-sheet 4x96into384demultiplex.csv 
+
+
 
 # list of available queues and nodes
 squeue
