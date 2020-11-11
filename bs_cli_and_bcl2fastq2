@@ -59,12 +59,12 @@ cd /t1-data/user/lfelce/Dong_Pools_5-8/
 
 module load bcl2fastq
 
-bcl2fastq --input-dir /Data/Intensities/BaseCalls/
---runfolder-dir ./
---output-dir /Data/Intensities/BaseCalls/Output/
---interop-dir /Data/Intensities/BaseCalls/InterOp/
---stats-dir /Data/Intensities/BaseCalls/Stats/
---reports-dir /Data/Intensities/BaseCalls/Reports/
+bcl2fastq --input-dir /t1-data/user/lfelce/Dong_Pools_5-8/Data/Intensities/BaseCalls/
+--runfolder-dir /t1-data/user/lfelce/Dong_Pools_5-8/
+--output-dir /t1-data/user/lfelce/Dong_Pools_5-8/Data/Intensities/BaseCalls/Output/
+--interop-dir /t1-data/user/lfelce/Dong_Pools_5-8/Data/Intensities/BaseCalls/InterOp/
+--stats-dir /t1-data/user/lfelce/Dong_Pools_5-8/Data/Intensities/BaseCalls/Stats/
+--reports-dir /t1-data/user/lfelce/Dong_Pools_5-8/Data/Intensities/BaseCalls/Reports/
 --sample-sheet 4x96into384demultiplex.csv 
 
 
@@ -76,4 +76,6 @@ squeue
 
 # send job to queue
 sbatch ./<jobname>.sh
+
+# repeat with Dong_Pools_9-12
 
