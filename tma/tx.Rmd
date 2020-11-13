@@ -14,7 +14,7 @@ library(EnsDb.Hsapiens.v86)
 # to convert to Word document, type in Console >rmarkdown::render("file_name.Rmd")
 ```
 
-Update 2nd November 2020
+Update 13th November 2020
 
 ## Importing transcript abundance with tximport
 
@@ -47,6 +47,7 @@ names(txi.kallisto)
 head(txi.kallisto$counts)
 ```
 
+
 ```{r tx untreated samples all patients}
 # direct R Studio to folders where abundance.h5 files are stored
 dir_untreated <- c("TMA-181-R1", "TMA-181-R2", "TMA-181-R8", "TMA-188-R1", "TMA-188-R2", "TMA-188-R8", "TMA-196-R1", "TMA-196-R2", "TMA-196-R8", "TMA-198-R1", "TMA-198-R2", "TMA-198-R6")
@@ -66,7 +67,6 @@ txi.untreated <- tximport(files_untreated, type = "kallisto", tx2gene = tx2gene)
 names(txi.untreated)
 head(txi.untreated$counts)
 ```
-
 ```{r tx tamox samples 3 patients}
 # direct R Studio to folders where abundance.h5 files are stored
 dir_tamox <- c("TMA-181-R2", "TMA-181-R3", "TMA-181-R8", "TMA-181-R9", "TMA-188-R2","TMA-188-R3","TMA-188-R8","TMA-188-R9","TMA-196-R2","TMA-196-R3","TMA-196-R8","TMA-196-R9")
@@ -89,4 +89,78 @@ tx2gene <- select(edb, k, "GENEID", "TXID")
 txi.tamox <- tximport(files_tamox, type = "kallisto", tx2gene = tx2gene)
 names(txi.tamox)
 head(txi.tamox$counts)
+```
+
+```{r tx fulv samples 3 patients}
+# direct R Studio to folders where abundance.h5 files are stored
+dir_fulv <- c("TMA-188-R10","TMA-188-R2","TMA-188-R4","TMA-188-R8","TMA-196-R10","TMA-196-R2","TMA-196-R4","TMA-196-R8","TMA-198-R2","TMA-198-R3","TMA-198-R6","TMA-198-R7")
+
+files_fulv <- list.files(path=dir_fulv, pattern="*.h5", full.names=TRUE)
+
+# combine into one table
+names(files_fulv) <- paste0("TMA", 1:12)
+
+# read in kallisto type (transcript-level information)
+txi.fulv <- tximport(files_fulv, type = "kallisto", txOut=TRUE)
+head(txi.fulv$counts)
+
+```
+
+```{r gene fulv samples 3 patients}
+edb <- EnsDb.Hsapiens.v86
+k <- keys(edb, keytype = "TXID")
+tx2gene <- select(edb, k, "GENEID", "TXID")
+txi.fulv <- tximport(files_fulv, type = "kallisto", tx2gene = tx2gene)
+names(txi.fulv)
+head(txi.fulv$counts)
+```
+
+
+
+```{r tx upa samples 3 patients}
+# direct R Studio to folders where abundance.h5 files are stored
+dir_upa <- c("TMA-181-R11","TMA-181-R12","TMA-181-R13","TMA-181-R2","TMA-181-R5","TMA-181-R6","TMA-181-R7","TMA-181-R8","TMA-188-R11","TMA-188-R12","TMA-188-R13","TMA-188-R2","TMA-188-R5","TMA-188-R6","TMA-188-R7","TMA-188-R8","TMA-196-R11","TMA-196-R12","TMA-196-R13","TMA-196-R2","TMA-196-R5","TMA-196-R6","TMA-196-R7","TMA-196-R8")
+
+files_upa <- list.files(path=dir_upa, pattern="*.h5", full.names=TRUE)
+
+# combine into one table
+names(files_upa) <- paste0("TMA", 1:24)
+
+# read in kallisto type (transcript-level information)
+txi.upa <- tximport(files_upa, type = "kallisto", txOut=TRUE)
+head(txi.upa$counts)
+
+```
+
+```{r gene upa samples 3 patients}
+edb <- EnsDb.Hsapiens.v86
+k <- keys(edb, keytype = "TXID")
+tx2gene <- select(edb, k, "GENEID", "TXID")
+txi.upa <- tximport(files_upa, type = "kallisto", tx2gene = tx2gene)
+names(txi.upa)
+head(txi.upa$counts)
+```
+
+```{r tx 17be samples 3 patients}
+# direct R Studio to folders where abundance.h5 files are stored
+dir_17be <- c("TMA-188-R14","TMA-188-R15","TMA-188-R2","TMA-188-R8","TMA-196-R14","TMA-196-R15","TMA-196-R2","TMA-196-R8","TMA-198-R2","TMA-198-R4","TMA-198-R6","TMA-198-R8")
+
+files_17be <- list.files(path=dir_17be, pattern="*.h5", full.names=TRUE)
+
+# combine into one table
+names(files_17be) <- paste0("TMA", 1:12)
+
+# read in kallisto type (transcript-level information)
+txi.17be <- tximport(files_17be, type = "kallisto", txOut=TRUE)
+head(txi.17be$counts)
+
+```
+
+```{r gene 17be samples 3 patients}
+edb <- EnsDb.Hsapiens.v86
+k <- keys(edb, keytype = "TXID")
+tx2gene <- select(edb, k, "GENEID", "TXID")
+txi.17be <- tximport(files_17be, type = "kallisto", tx2gene = tx2gene)
+names(txi.17be)
+head(txi.17be$counts)
 ```
