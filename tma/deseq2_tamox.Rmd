@@ -30,6 +30,8 @@ library(readr)
 
 
 ```{r}
+# need to edit metadata to merge condition 1 and 2 together
+
 metadata_tamox <- read.table("metadata_tamox.csv", sep=",", header = TRUE)
 rownames(metadata_tamox) <- metadata_tamox$Samples
 colnames(txi.tamox$counts) <- rownames(metadata_tamox)
