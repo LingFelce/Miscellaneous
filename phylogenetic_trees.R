@@ -12,111 +12,49 @@ library(igraph)
 
 metadata <- read.csv("/t1-data/user/lfelce/R/ORF3a_replacement_V202L.csv")
 
-df <- metadata[,c("virusName", "gisaidID", "covGlueLineage", "m49SubRegion")]
+df <- metadata[,c("virusName", "gisaidID", "covGlueLineage", "countryCode", "m49SubRegion")]
 
-table <- as.data.frame(table(df$virusName, df$covGlueLineage))
+df2 <- df[,c("gisaidID", "covGlueLineage")]
+colnames(df2) <- c("to", "from")
+df2 <- df2[,c("from", "to")]
 
-#  Get distinct sources names
-sources <- df %>%
-  distinct(covGlueLineage) %>%
-  rename(label = covGlueLineage)
+df3 <- df[,c("gisaidID", "countryCode", "m49SubRegion")]
+colnames(df3) <- c("name", "country", "region")
 
-# Get distinct destination names
-destinations <- df %>%
-  distinct(virusName) %>%
-  rename(label = virusName)
+df4 <- as.data.frame(df[,c("covGlueLineage")])
+df4 <- df4[!duplicated(df4$`df[, c("covGlueLineage")]`),]
+df4 <- as.data.frame(df4)
+colnames(df4) <- "name"
+df4$country <- "NA"
+df4$region <- "NA"
 
-# Join the two data to create node
-
-# Add unique ID for each country
-nodes <- full_join(sources, destinations, by = "label") 
-nodes <- nodes %>%
-  mutate(id = 1:nrow(nodes)) %>%
-  select(id, everything())
-head(nodes, 3)
+df3 <- rbind(df3, df4)
 
 
-# # Rename the n.call column to weight
-# phone.call <- phone.call %>%
-#   rename(weight = n.call)
+graph <- graph_from_data_frame(df2, vertices = df3)
 
-# (a) Join nodes id for source column
-edges <- df %>% 
-  left_join(nodes, by = c("covGlueLineage" = "label")) %>% 
-  rename(from = id)
-
-# (b) Join nodes id for destination column
-edges <- edges %>% 
-  left_join(nodes, by = c("virusName" = "label")) %>% 
-  rename(to = id)
-
-# (c) Select/keep only the columns from and to
-edges <- select(edges, from, to)
-head(edges, 3)
-
-net.igraph <- graph_from_data_frame(
-  d = edges, vertices = nodes, 
-  directed = TRUE
-)
-
-set.seed(123)
-plot(net.igraph, edge.arrow.size = 0.2,
-     layout = layout_with_graphopt)
+set.seed(1)
+ggraph(graph, 'circlepack') + 
+  geom_edge_link(aes(start_cap = label_rect(node1.name),
+                     end_cap = label_rect(node2.name))) +
+  geom_node_label(aes(label = name), repel=TRUE, label.size=0.1) +
+  geom_node_point(aes(fill=country))
 
 
-net.tidy <- tbl_graph(
-  nodes = nodes, edges = edges, directed = TRUE
-)
-
-ggraph(net.tidy, layout = "graphopt") + 
-  geom_node_point() +
+set.seed(1)
+ggraph(graph, 'circlepack') + 
   geom_edge_link() + 
-  scale_edge_width(range = c(0.2, 2)) +
-  geom_node_text(aes(label = label), repel = TRUE) +
-  labs(edge_width = "df") +
-  theme_graph()
+  geom_node_point(aes(colour=region)) + 
+  geom_node_label(aes(label = ifelse(grepl("B", name), as.character(name), NA_character_)), repel=TRUE, label.size=0.25) +
+  coord_fixed() +
+  theme(legend.position = "bottom") +
+  ggtitle("ORF3a replacement V202L")
+  
 
 
 
+ 
 
 
-
-
-
-
-groups <- as.data.frame(df[,3])
-
-# to perform different types of hierarchical clustering
-# package functions used: daisy(), diana(), clusplot()
-dist <- daisy(groups, metric = c("gower"))
-
-cl <- hclust(dist(df3, method="euclidean"), method="complete")
-
-dend <- cl %>% as.dendrogram 
-
-# labels as virus name, colour as country
-correct_labels <- cl$labels[cl$order]
-correct_labels <- as.data.frame(correct_labels)
-country <- str_split_fixed(correct_labels$correct_labels, "/", 4)
-correct_labels$country <- country[,2]
-labels(dend) <- correct_labels$correct_labels
-
-library(colorspace)
-
-region <- as.factor(df$m49SubRegion)
-n_region <- length(unique(region))
-cols <- colorspace::rainbow_hcl(n_region)
-col_region <- cols[region]
-labels_colors(dend) <- col_region[order.dendrogram(dend)]
-
-# correct_labels <- rownames_to_column(correct_labels, "order")
-# order <- str_pad(correct_labels$order, 3, side="left",pad = "0")
-# correct_labels$order <- order
-
-
-par(mar = c(1,5,1,5))
-dend %>% set("labels_cex",1) %>% color_branches(k=6) %>%
-  plot(main = "ORF3a replacement V202L", cex.main=2, horiz=TRUE)
-legend("topright", legend = levels(cell_type), fill = cols_2, cex=2)
 
 
