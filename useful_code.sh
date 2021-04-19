@@ -16,3 +16,7 @@ df2 <- melt(data = df,
        
 ggplot(df2, aes(x=counts)) + geom_density() + facet_wrap(groups)
 ggplot(df2, aes(x=counts)) + geom_density(aes=groups)
+
+# downloading .fastq files only from Wellcome Trust sequencing ftp servers
+wget -Nc -r -A .fastq.gz URL
+# -Nc pick up from where you left off with original time stamp, -r recursive, -A file extension
