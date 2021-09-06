@@ -40,14 +40,14 @@ import pandas as pd
 # embedding = reducer.fit_transform(scaled_penguin_data)
 # embedding.shape
 
-data = pd.read_csv("/stopgap/donglab/ling/R/total_python.csv")
+data = pd.read_csv("/stopgap/donglab/ling/R/test/total_python.csv")
 data.head()
 list(data.columns)
 
 data = data.dropna()
 data.Sample.value_counts()
 
-sns.pairplot(data, hue='Sample')
+# sns.pairplot(data, hue='Sample')
 
 import umap
 
@@ -74,8 +74,9 @@ embedding.shape
 plt.scatter(
     embedding[:, 0],
     embedding[:, 1],
+    s=5,
     c=[sns.color_palette()[x] for x in data.Sample.map({"S1":0, "S2":1, "S3":2, "S4":3, "S5":4})])
 plt.gca().set_aspect('equal', 'datalim')
-plt.title('UMAP projection of the test dataset', fontsize=18)
+plt.title('UMAP projection of the test dataset', fontsize=15)
 
 
