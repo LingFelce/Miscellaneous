@@ -20,3 +20,7 @@ ggplot(df2, aes(x=counts)) + geom_density(aes=groups)
 # downloading .fastq files only from Wellcome Trust sequencing ftp servers
 wget -Nc -r -A .fastq.gz URL
 # -Nc pick up from where you left off with original time stamp, -r recursive, -A file extension
+
+# search for "string" in particular file type .extension in current folder .
+# use to search for particular line of code in all .R files
+find . -type f -name '*.extension' | xargs grep "string"
