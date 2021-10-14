@@ -24,3 +24,11 @@ wget -Nc -r -A .fastq.gz URL
 # search for "string" in particular file type .extension in current folder .
 # use to search for particular line of code in all .R files
 find . -type f -name '*.extension' | xargs grep "string"
+
+# if a normal Linux process is taking too long or has frozen (eg opening Libre Calc) then use@
+
+top
+
+# to see all processes and get process ID, then
+
+kill <PID>
