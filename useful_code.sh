@@ -33,6 +33,9 @@ top
 
 kill <PID>
 
+
+# move multiple files out of multiple subfolders and into main folder
+find . -type f -print0 | xargs -0 mv -t .
 # re-ordering columns of dataframe based on character
 test <- data.frame(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 cols <- c("b", "a", "c")
