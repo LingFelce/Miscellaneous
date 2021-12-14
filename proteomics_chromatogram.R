@@ -21,10 +21,16 @@ df <- df[df$Time_mins >=14 & df$Time_mins <=16,]
 df$factor <- ifelse(df$Height_mins == 0, 1, df$Height_mins)
 df.expanded <- df[rep(row.names(df), df$factor), 1:5]
 
-ggplot(df.expanded, aes(x = Time_mins, y = protein, fill = protein)) +
-  geom_density_ridges() +
-  theme_ridges() 
+# ggplot(df.expanded, aes(x = Time_mins, y = protein, fill = protein)) +
+#   geom_density_ridges() +
+#   theme_classic() 
 
+ggplot(df.expanded, aes(x = Time_mins, fill = protein)) +
+  geom_density() +
+  scale_y_continuous(expand = expansion(mult = c(0, .2))) +
+  facet_grid(protein~., switch = "y") +
+  xlim(14, 16) +
+  theme_ridges() 
 
 
 
