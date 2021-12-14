@@ -27,13 +27,9 @@ df.expanded <- df[rep(row.names(df), df$factor), 1:5]
 
 my_colours <- c("P6L" = "#00B050",
                 "P20L" = "#69269B",
-                "D22G" = "#EC782A",
-                "Q7K" = "#4371C4",
+                "D22G" = "#4371C4",
+                "Q7K" = "#EC782A",
                 "WT NP" = "black")
-
-order <- c("D22G", "P20L", "Q7K", "P6L", "WT NP")
-
-df.expanded <- df.expanded[match(order, df.expanded$protein),]
 
 order <- c("D22G", "P20L", "Q7K", "P6L", "WT NP")
 
