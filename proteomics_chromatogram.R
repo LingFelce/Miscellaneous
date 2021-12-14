@@ -25,13 +25,31 @@ df.expanded <- df[rep(row.names(df), df$factor), 1:5]
 #   geom_density_ridges() +
 #   theme_classic() 
 
+my_colours <- c("P6L" = "#00B050",
+                "P20L" = "#69269B",
+                "D22G" = "#EC782A",
+                "Q7K" = "#4371C4",
+                "WT NP" = "black")
+
+order <- c("D22G", "P20L", "Q7K", "P6L", "WT NP")
+
+df.expanded <- df.expanded[match(order, df.expanded$protein),]
+
+order <- c("D22G", "P20L", "Q7K", "P6L", "WT NP")
+
+df.expanded <- df.expanded %>%
+  mutate(protein =  factor(protein, levels = order)) %>%
+  arrange(protein)
+
+pdf("/stopgap/donglab/ling/R/dannielle/plot.pdf")
 ggplot(df.expanded, aes(x = Time_mins, fill = protein)) +
   geom_density() +
+  scale_fill_manual(values= my_colours) +
   scale_y_continuous(expand = expansion(mult = c(0, .2))) +
   facet_grid(protein~., switch = "y") +
   xlim(14, 16) +
-  theme_ridges() 
-
-
+  theme_ridges() +
+  scale_color_identity()
+dev.off()
 
 
