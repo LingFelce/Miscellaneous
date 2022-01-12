@@ -71,3 +71,8 @@ for i in s2_totalseq-3_HNT5KDSX2*; do mv ${i} ${i/#s2_totalseq-3_HNT5KDSX2/s2_to
 for i in s2_totalseq-4_HN2L5DSX2*; do mv ${i} ${i/#s2_totalseq-4_HN2L5DSX2/s2_totalseq-4_A}; done
 for i in s2_totalseq-4_HNT5KDSX2*; do mv ${i} ${i/#s2_totalseq-4_HNT5KDSX2/s2_totalseq-4_B}; done
 
+# check which files are missing after running STAR
+ls -l ./*.bam > /stopgap/donglab/ling/bam.txt
+ls -l ./*.sh > /stopgap/donglab/ling/files.txt
+# print list of file names for .bam and .sh (script) files
+# check in R which ones are missing
