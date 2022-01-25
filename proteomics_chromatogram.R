@@ -118,3 +118,37 @@ ggplot(df, aes(x = Time_mins, y = Height_mins, fill = protein)) +
   xlim(14, 16) +
   theme_ridges() 
 dev.off()
+
+#* NP16CPChroms ----
+# 3h NP16 immuno-proteasome - NP, D103N, D103Y
+
+np <- read.csv("/stopgap/donglab/ling/R/dannielle/NP16CPChroms/NP.csv")
+d103n <- read.csv("/stopgap/donglab/ling/R/dannielle/NP16CPChroms/D103N.csv")
+d103y <- read.csv("/stopgap/donglab/ling/R/dannielle/NP16CPChroms/D103Y.csv")
+
+np$protein <- "NP"
+d103n$protein <- "D103N"
+d103y$protein <- "D103Y"
+
+df <- rbind(np, d103n, d103y)
+df <- df[df$Time_mins >=16 & df$Time_mins <=24,]
+
+my_colours <- c("D103N" = "#931100",
+                "D103Y" = "#011892",
+                "NP" = "black")
+
+order <- c("D103Y", "D103N", "NP")
+
+df <- df %>%
+  mutate(protein =  factor(protein, levels = order)) %>%
+  arrange(protein)
+
+pdf("/stopgap/donglab/ling/R/dannielle/NP16CPChroms/NP16_cp_3h_chrom.pdf")
+ggplot(df, aes(x = Time_mins, y = Height_mins, fill = protein)) + 
+  geom_line(aes(color = protein), lwd=1.5) +
+  scale_color_manual(values = my_colours) +
+  scale_y_continuous(expand = expansion(mult = c(0, .2))) +
+  facet_grid(protein~., switch = "y") +
+  xlim(16, 24) +
+  theme_ridges() 
+dev.off()
