@@ -76,3 +76,6 @@ ls -l ./*.bam > /stopgap/donglab/ling/bam.txt
 ls -l ./*.sh > /stopgap/donglab/ling/files.txt
 # print list of file names for .bam and .sh (script) files
 # check in R which ones are missing
+
+# soft link file
+find /t1-data/user/lfelce/MiXCR/CD4_input -name "*.fastq.gz" | xargs -I v_f ln -s v_f
