@@ -88,34 +88,36 @@ dev.off()
 #* NP16IMPChroms ----
 # 3h NP16 immuno-proteasome - NP, D103N, D103Y
 
-np <- read.csv("/stopgap/donglab/ling/R/dannielle/NP1sCP3hChroms/NP.csv")
-p6l <- read.csv("/stopgap/donglab/ling/R/dannielle/NP1sCP3hChroms/P6L.csv")
-q7k <- read.csv("/stopgap/donglab/ling/R/dannielle/NP1sCP3hChroms/Q7K.csv")
+np <- read.csv("/stopgap/donglab/ling/R/dannielle/NP16IMPChroms/NP.csv")
+d103n <- read.csv("/stopgap/donglab/ling/R/dannielle/NP16IMPChroms/D103N.csv")
+d103y <- read.csv("/stopgap/donglab/ling/R/dannielle/NP16IMPChroms/D103Y.csv")
 
 np$protein <- "NP"
-p6l$protein <- "P6L"
-q7k$protein <- "Q7K"
+d103n$protein <- "D103N"
+d103y$protein <- "D103Y"
 
-df <- rbind(np, p6l, q7k)
-df <- df[df$Time_mins >=14 & df$Time_mins <=16,]
+df <- rbind(np, d103n, d103y)
+df <- df[df$Time_mins >=16 & df$Time_mins <=24,]
 
-my_colours <- c("P6L" = "#00B050",
-                "Q7K" = "#EC782A",
+my_colours <- c("D103N" = "#931100",
+                "D103Y" = "#011892",
                 "NP" = "black")
 
-order <- c("Q7K", "P6L", "NP")
+order <- c("D103Y", "D103N", "NP")
 
 df <- df %>%
   mutate(protein =  factor(protein, levels = order)) %>%
   arrange(protein)
 
-pdf("/stopgap/donglab/ling/R/dannielle/NP1sCP3hChroms/NP1_cp_3h_chrom.pdf")
+df <- na.omit(df)
+
+pdf("/stopgap/donglab/ling/R/dannielle/NP16IMPChroms/NP16_imp_3h_chrom.pdf")
 ggplot(df, aes(x = Time_mins, y = Height_mins, fill = protein)) + 
   geom_line(aes(color = protein), lwd=1.5) +
   scale_color_manual(values = my_colours) +
   scale_y_continuous(expand = expansion(mult = c(0, .2))) +
   facet_grid(protein~., switch = "y") +
-  xlim(14, 16) +
+  xlim(16, 24) +
   theme_ridges() 
 dev.off()
 
