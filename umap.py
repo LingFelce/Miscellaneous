@@ -2,13 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Sep  3 14:08:06 2021
-
 @author: lfelce
-
 UMAP test
-
 press F9 to run code line by line!
-
 https://umap-learn.readthedocs.io/en/latest/basic_usage.html
 """
 
@@ -71,12 +67,27 @@ scaled_data = StandardScaler().fit_transform(data2)
 embedding = reducer.fit_transform(scaled_data)
 embedding.shape
 
-plt.scatter(
-    embedding[:, 0],
-    embedding[:, 1],
-    s=5,
-    c=[sns.color_palette()[x] for x in data.Sample.map({"S1":0, "S2":1, "S3":2, "S4":3, "S5":4})])
-plt.gca().set_aspect('equal', 'datalim')
-plt.title('UMAP projection of the test dataset', fontsize=15)
 
+data['umap_1'] = embedding[:,0]
+data['umap_2'] = embedding[:,1]
+
+group = ["S1", "S2", "S3", "S4", "S5"]
+# each group/sample a different shape:
+# circle, triangle, upside down triangle, square, diamond
+# each group a different colour
+markers = ["o", "^", "v", "s", "D"]
+for idx, sample_id in enumerate(["S1", "S2", "S3", "S4", "S5"]):
+    print(idx, sample_id)
+    data_sub = data[data.Sample==sample_id]
+    plt.scatter(
+        data_sub['umap_1'],
+        data_sub['umap_2'],
+        s=10,
+        c=sns.color_palette("Greys_r")[idx],
+        marker=markers[idx],
+        label = group[idx]
+    )
+plt.legend()
+plt.show
+   
 
