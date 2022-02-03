@@ -89,5 +89,6 @@ for idx, sample_id in enumerate(["S1", "S2", "S3", "S4", "S5"]):
     )
 plt.legend()
 plt.show
+plt.savefig('/stopgap/donglab/ling/R/test/umap.eps', format='eps')
    
 
